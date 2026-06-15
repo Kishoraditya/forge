@@ -78,3 +78,5 @@ reports/load/
 
 # ----- Project Specific -----
 # Root TURN.md is retired. Use versioned files in turns/.
+
+docs/prompts_used.md
