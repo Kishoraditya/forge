@@ -10,6 +10,8 @@ Phase 0 not started. Project scaffold complete. No code written yet.
 - Makefile and helper scripts created
 - pyproject.toml initialized with all dependencies
 - Pre-commit hooks configured
+- Agent governance hardened: `AGENTS.md` is canonical, `CLAUDE.md` delegates to it, task metadata is stricter, and feature branches are required
+- Added context-engineering docs: `FEATURES.md`, `CONTEXT_MAP.md`, `GIT_WORKFLOW.md`, `QUALITY_GATES.md`, `SECURITY.md`, `STATE.md`, `WORLD_SIGNALS.md`
 
 ## What Is In Progress
 - Nothing — scaffold just completed
@@ -39,6 +41,8 @@ Phase 0 not started. Project scaffold complete. No code written yet.
 - Upstash Redis: deferred until hosted Redis/deployment parity is required; local Docker Redis is enough before then
 - Observability keys: deferred until the matching Phase 2 observability feature is scheduled
 - Turn recovery: root `TURN.md` is retired; use numbered files in `turns/`
+- Branch workflow: feature work must happen on feature/fix/docs branches, not directly on `main`
+- World signals: branch, active task, feature ID, allowed files, required tests, env readiness, and remote freshness should be captured at task start
 
 ## Next 3 Tasks
 1. Human: Initialize Git repository

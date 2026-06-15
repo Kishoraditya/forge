@@ -7,9 +7,11 @@ These ceremonies are non-negotiable. They keep context alive and prevent drift.
 2. Open `docs/CONTEXT.md` and read it in full.
 3. Open `tasks/IN_PROGRESS.md`.
 4. Open the latest previous file in `turns/`.
-5. If continuing a task: re-read the spec file and task description.
-6. If starting new: pick from `BACKLOG.md`, move to `IN_PROGRESS.md`.
-7. Begin.
+5. Open `docs/CONTEXT_MAP.md` to choose only the extra files needed.
+6. Capture world signals from `docs/WORLD_SIGNALS.md`: branch, task, feature, allowed files, required tests.
+7. If continuing a task: re-read the spec file and task description.
+8. If starting new: pick from `BACKLOG.md`, move to `IN_PROGRESS.md`.
+9. Begin.
 
 ## Session End Ritual
 1. Is the current task done?
@@ -26,6 +28,8 @@ These ceremonies are non-negotiable. They keep context alive and prevent drift.
 ### Before
 - Read spec AC list.
 - Read task "context needed" files.
+- Confirm branch from the task and sync it using `docs/GIT_WORKFLOW.md`.
+- State implementation acknowledgment: spec read, task ID, files allowed, files forbidden, test plan.
 - Confirm task is S or M sized. If L, split first.
 
 ### During
@@ -36,6 +40,7 @@ These ceremonies are non-negotiable. They keep context alive and prevent drift.
 
 ### After
 - Run tests locally.
+- Run quality gates from `docs/QUALITY_GATES.md`.
 - Review diff yourself before asking human to review.
 - Add to `DONE.md`.
 - If you discovered anything, add it to `PARKING_LOT.md`.

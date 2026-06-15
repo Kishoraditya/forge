@@ -2,10 +2,11 @@
 
 ## Minimal Context Rule
 Every agent turn loads only:
-- `CLAUDE.md` or `AGENTS.md`
+- `AGENTS.md`
 - `docs/CONTEXT.md`
 - `tasks/IN_PROGRESS.md`
 - The latest file in `turns/`
+- `docs/CONTEXT_MAP.md`
 
 Load specs, task details, source files, and architecture docs only when the
 current task requires them.
@@ -80,6 +81,7 @@ Use Prompt B below.
 
 ### Stage 5 - Code a Task (Agent)
 Use Prompt C below. One task per agent turn, max.
+Work on the feature branch named in the task, never directly on `main`.
 
 ### Stage 6 - Review + Test (Human)
 - Read the diff.
@@ -106,6 +108,7 @@ from Stage 5.
 ```text
 Read docs/forge.md and docs/CONTEXT.md.
 Read specs/_template.spec.md.
+Read docs/FEATURES.md.
 Read the latest file in turns/.
 
 Create spec files for Phase 0 features F001 through F008.
@@ -124,6 +127,7 @@ Show me F001 spec first. Wait for my approval before F002.
 ### Prompt B - Break Spec Into Tasks
 ```text
 Read specs/phase-0/FXXX-name.spec.md and tasks/_format.md.
+Read docs/GIT_WORKFLOW.md.
 Read the latest file in turns/.
 
 Break this feature into atomic tasks. Add to tasks/BACKLOG.md.
@@ -132,21 +136,27 @@ Rules:
 - One task = one file or one function only
 - Order by dependency
 - Mark human vs agent
+- Group tasks for the same feature on the same feature branch
+- Include Files allowed and Files forbidden
 - No code
 - Write turns/Turn-XX-start.md before and turns/Turn-XX-stop.md after
 ```
 
 ### Prompt C - Implement One Task
 ```text
-Read CLAUDE.md, docs/CONVENTIONS.md, and the latest file in turns/.
+Read AGENTS.md, docs/CONVENTIONS.md, docs/CONTEXT_MAP.md, docs/WORLD_SIGNALS.md, and the latest file in turns/.
 Read [spec file path].
 
 Your task: [paste full task block from IN_PROGRESS.md]
 
 Rules:
+- Confirm branch from the task; do not work directly on main
+- Before edits, state: spec read, task ID, files allowed, files forbidden, test plan
 - Write test stubs first, then implementation
 - Touch only the files listed in the task
 - Follow CONVENTIONS.md exactly (header, docstring, naming)
+- Follow SECURITY.md for secrets and telemetry-sensitive work
+- Follow QUALITY_GATES.md before review
 - When done: move task to DONE.md, update CONTEXT.md, write turns/Turn-XX-stop.md
 - Tell me which tests pass before finishing
 ```
@@ -163,7 +173,7 @@ Write turns/Turn-XX-stop.md when done.
 
 ### Prompt E - Resume After Crash
 ```text
-Read CLAUDE.md, docs/CONTEXT.md, and the latest file in turns/.
+Read AGENTS.md, docs/CONTEXT.md, and the latest file in turns/.
 
 Continue from where the previous session stopped.
 The latest turn file has the exact stopping point.

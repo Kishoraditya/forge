@@ -6,6 +6,7 @@
 - **Phase**: Phase X
 - **Depends on**: [list feature IDs or "none"]
 - **Blocks**: [list feature IDs or "none"]
+- **Feature registry entry**: docs/FEATURES.md
 - **Estimated tasks**: N
 
 ## What This Does (One Paragraph)
@@ -22,6 +23,9 @@
 ## Data Model
 [Pydantic schema or table definition for any new data structures]
 
+## Agent State Impact
+[New/changed state fields, owner, persistence target, serialization behavior, redaction behavior. Use docs/STATE.md.]
+
 ## API Contract (if applicable)
 [Endpoint, method, request body, response body — exact shapes]
 
@@ -36,6 +40,12 @@
 |------|--------|
 | backend/app/main.py | Register new router |
 
+## Security & Secrets
+[Secrets touched, redaction requirements, RLS/auth impact, telemetry sensitivity. Use docs/SECURITY.md.]
+
+## Dependencies
+[New dependencies required, alternatives considered, security/license/size notes, or "none".]
+
 ## Test Cases
 ### Happy Path
 - Input: ... → Expected output: ...
@@ -49,6 +59,9 @@
 
 ## Manual Test Flow
 [1-5 step human-executable test. Added to MANUAL_TESTING.md when done.]
+
+## Phase/Feature Exit Signal
+[What world signal or quality gate proves this feature is complete? Use docs/WORLD_SIGNALS.md and docs/QUALITY_GATES.md.]
 
 ## Notes & Assumptions
 [Anything uncertain, any tradeoffs made in this spec]

@@ -1,17 +1,24 @@
-# FORGE — Agent Context (Codex / Agentic Assistants)
+# FORGE - Agent Context
 
-## What Is This
-This file is for OpenAI Codex, Gemini, and other AI coding assistants working on the Forge project. Forge is a self-hosted, BYOK (Bring Your Own Key), multi-session AI agent workbench — a composable harness + LLM, globally deployable on free infrastructure, investor-demonstrable, and enterprise-architecture-ready. It supports a single admin with multiple anonymous simultaneous users (session-isolated, credit-limited). No logins. No persistence between sessions. Built on Option B conversation graph architecture.
+## Canonical Source
+This file is the source of truth for OpenAI Codex, Claude Code, Gemini, Cursor,
+and other AI coding assistants working on Forge. Assistant-specific files such
+as `CLAUDE.md` must point here instead of duplicating rules.
 
-If you are an AI coding agent: read this file in full before making any changes. Then read the relevant spec file and task description before writing code.
+Forge is a self-hosted, BYOK, multi-session AI agent workbench. User-facing
+sessions are ephemeral: anonymous users do not get durable accounts or durable
+personal session continuity. System telemetry, graph relationships, audit
+records, platform configuration, and metrics may persist according to the
+architecture.
 
-## Current Phase & Active Work
-Phase: 0 — Core Engine (not yet started)
-Active tasks: see tasks/IN_PROGRESS.md
-Last updated: 2026-06-12
+## Current Phase
+- Phase: 0 - Core Engine
+- Status: not started
+- Human gate: complete `tasks/HUMAN_TASKS.md` HT-001 through HT-008 before
+  AI-assisted Phase 0 spec/task work
 
-## Architecture in 10 Lines
-```
+## Architecture In 10 Lines
+```text
 FRONTEND        Next.js 14 + Tailwind + shadcn/ui + Zustand
 API GATEWAY     FastAPI + Cloudflare Tunnel + CORS
 AGENT CORE      LangGraph + DSPy + LiteLLM
@@ -23,124 +30,126 @@ OBSERVABILITY   OpenTelemetry + Opik + PostHog + GrowthBook
 INFRA           Docker + Terraform + Cloudflare + Railway
 ```
 
-## Project Layout
-```
-forge/
-├── backend/
-│   └── app/
-│       ├── api/           # FastAPI route handlers (thin — no business logic)
-│       ├── core/          # LangGraph agent flows, DSPy modules
-│       ├── services/      # Business logic layer
-│       ├── models/        # Pydantic schemas and domain models
-│       ├── db/            # Database access layer (Supabase, pgvector)
-│       ├── graph/         # Neo4j graph operations
-│       └── tools/         # MCP tool definitions, sandboxed execution
-├── frontend/              # Next.js 14 application
-├── infra/                 # Docker, Terraform, Cloudflare config
-├── specs/                 # Feature specifications (phase-X/)
-├── tasks/                 # Task tracking (IN_PROGRESS.md, DONE.md)
-└── docs/                  # ARCHITECTURE.md, CONVENTIONS.md, CONTEXT.md
-```
+## Minimum Context Loading Order
+Load the smallest context that can safely complete the task:
+1. Current task from `tasks/IN_PROGRESS.md` or the user-provided task
+2. Relevant spec from `specs/`
+3. `docs/CONTEXT.md`
+4. Latest file in `turns/`
+5. `docs/CONTEXT_MAP.md` for routing to any extra docs
+6. Source files listed by the task
 
-## Rules (Non-Negotiable)
-1. Read the spec file before writing any code
-2. One function/file/module per task
-3. All code has docstrings (see docs/CONVENTIONS.md for format)
-4. Write test first, then implementation
-5. Update docs/CONTEXT.md and tasks/IN_PROGRESS.md when a task is done
-6. Write `turns/Turn-XX-start.md` as first action and `turns/Turn-XX-stop.md` as last action in every response
-7. Max 300 lines per file, max 50 lines per function
-8. No business logic in API route handlers — delegate to services/
-9. No direct database calls outside db/ layer
-10. All async functions must be awaited (no fire-and-forget without Celery)
+Read `docs/ARCHITECTURE.md` only for architecture-sensitive work. Read
+`docs/forge.md` only for spec creation or scope validation.
 
-## Do Not
-- Invent architecture not documented in docs/ARCHITECTURE.md
-- Create new dependencies without adding to pyproject.toml and noting in the task
-- Skip the spec file — the spec is the single source of truth
-- Write more than the task requires
-- Create files not listed in the current task
-- Touch files not listed in the current task
-- Add hardcoded strings — use constants or config
+## Turn Files
+Every agent response must create numbered turn files:
+- First repo action: `turns/Turn-XX-start.md`
+- Last repo action: `turns/Turn-XX-stop.md`
 
-## Developer Signature (Required on Every File)
-### Python:
-```python
-# =============================================================================
-# forge / [module path]
-# =============================================================================
-# Description : [one sentence]
-# Layer       : [Infra | API | Core | Tools | Memory | Observability]
-# Feature     : [FXXX — Feature Name]
-# Author      : [human | claude-code | cursor | codex] + KSR (reviewed by)
-# Created     : YYYY-MM-DD
-# Modified    : YYYY-MM-DD
-# Version     : 0.1.0
-# =============================================================================
-```
-### TypeScript/TSX:
-```typescript
-// =============================================================================
-// forge / [module path]
-// =============================================================================
-// Description : [one sentence]
-// Layer       : [Infra | API | Core | Tools | Memory | Observability]
-// Feature     : [FXXX — Feature Name]
-// Author      : [human | claude-code | cursor | codex] + KSR (reviewed by)
-// Created     : YYYY-MM-DD
-// Modified    : YYYY-MM-DD
-// Version     : 0.1.0
-// =============================================================================
+Use the next available zero-padded turn number. If a session crashes, resume
+from the newest file in `turns/`.
+
+## Implementation Acknowledgment
+Before any implementation edit, state these in the user-visible update or turn
+file:
+- Spec file read
+- Task ID
+- Files allowed to modify
+- Files forbidden
+- Test plan
+
+Do not implement until these are known.
+
+## Non-Negotiable Rules
+1. Spec first: no implementation without reading the relevant spec.
+2. One atomic task at a time: one function, file, module, migration, or config.
+3. Tests first: write or update the failing test before implementation.
+4. Allowed files only: touch only files listed in the task.
+5. No opportunistic refactors: modify only lines required for the task.
+6. No business logic in API routes: API calls services.
+7. Database access originates in `backend/app/db/`; services call db.
+8. Core graph code calls services, not database clients directly.
+9. All async functions must be awaited; no fire-and-forget without Celery.
+10. Max 300 lines per file and 50 lines per function.
+11. All code has docstrings according to `docs/CONVENTIONS.md`.
+12. No hardcoded strings where config/constants are appropriate.
+
+## Branch Workflow
+Never do feature work directly on `main`. Group tasks by feature and work on a
+feature branch:
+- Feature branch: `feat/FXXX-short-name`
+- Fix branch: `fix/FXXX-short-desc`
+- Docs branch: `docs/FXXX-short-desc` or `docs/scaffold-short-desc`
+
+Before opening or merging a PR, sync with remote:
+```bash
+git fetch origin
+git checkout main
+git pull --ff-only origin main
+git checkout feat/FXXX-short-name
+git rebase main
 ```
 
-## Spec-First Workflow
-```
-forge.md → spec file → human reviews → tasks → test first → implement → review → DONE.md
-```
-Never skip a step. The spec is the authority.
-
-## Quick Commands
-```
-make dev        → start all local services
-make test       → run full test suite
-make lint       → run linting + type check
-make spec F=F001 → scaffold spec for feature F001
-make task       → scaffold new task
-make context    → reminder to update CONTEXT.md
-make flow F=F009 → show manual test flow for a feature
+If another simultaneous branch updates shared files, fetch and rebase before
+continuing:
+```bash
+git fetch origin
+git rebase origin/main
 ```
 
-## turns/ — Crash Recovery
-Write numbered turn files in `turns/` for every response:
-- First action: create `turns/Turn-XX-start.md`
-- Last action: create `turns/Turn-XX-stop.md`
+Resolve conflicts manually, rerun quality gates, then push with lease:
+```bash
+git push --force-with-lease
+```
 
-Use the next available zero-padded turn number. If the agent session crashes,
-the latest start/stop file tells the next session exactly where to resume.
+See `docs/GIT_WORKFLOW.md` for the full branch and merge process.
 
-## Context Loading Order
-1. AGENTS.md (this file — ~150 tokens)
-2. docs/CONTEXT.md (~400 tokens)
-3. Current task from tasks/IN_PROGRESS.md (~200 tokens)
-4. Relevant spec from specs/ (~500 tokens)
-5. Source files (as needed)
+## Cost Control
+Prefer the cheapest capable model for agent workflows:
+1. Cheap model for formatting, simple edits, summaries, and routing
+2. Fast model for ordinary coding tasks
+3. Smart model only for architecture, debugging hard failures, or low-confidence work
 
-## The Lost Context Recovery Protocol
-If you have lost context or are starting a new session:
-1. Read AGENTS.md → understand the project
-2. Read docs/CONTEXT.md → understand current state
-3. Read tasks/IN_PROGRESS.md → understand active work
-4. Read docs/ARCHITECTURE.md → understand the system
-5. Run `git log --oneline -20` → see recent history
-6. Read the latest file in `turns/` → understand where the last session stopped
+Use live LLM calls only when the task requires live inference. Mock provider
+calls in tests unless the task is explicitly a live integration test.
 
-## Important Notes for Codex / Agentic Assistants
-- This is a monorepo: backend/, frontend/, infra/ in a single repository
-- Python 3.11+ with Poetry for dependency management
-- FastAPI for the backend, Next.js 14 for the frontend
-- LangGraph is the agent orchestration framework — not LangChain agents
-- LiteLLM is the LLM abstraction layer — never call provider APIs directly
-- Supabase is the primary relational database (PostgreSQL + pgvector)
-- Neo4j is the conversation graph database (Option B architecture)
-- All environment variables are documented in docs/ENVIRONMENT.md
-- Test files live in backend/tests/ mirroring the app/ structure
+## Security Rules
+- Never log API keys, service-role keys, tokens, cookies, or credentials.
+- Never return secret values in final answers or test output summaries.
+- Secrets only come from environment variables or approved secret stores.
+- Provider credentials are never stored in plaintext.
+- Redact sensitive values in telemetry, traces, logs, screenshots, and reports.
+- Do not commit `.env.local` or generated credential files.
+- Treat Supabase service-role keys as privileged server-only secrets.
+
+See `docs/SECURITY.md` for detailed rules.
+
+## Dependency Governance
+New dependencies require:
+- Justification in the task or PR
+- Alternatives considered
+- Security/licensing review
+- Size/runtime impact note
+- Update to `pyproject.toml`, package lock files, or frontend package files
+- Quality gates rerun
+
+Do not add dependencies for convenience if standard library or existing project
+libraries are sufficient.
+
+## Developer Signature
+Every new Python/TypeScript file must include the project signature from
+`docs/CONVENTIONS.md`.
+
+## Important Project Notes
+- Monorepo: `backend/`, `frontend/`, `infra/`
+- Python 3.11+ with Poetry
+- FastAPI backend, Next.js 14 frontend
+- LangGraph for orchestration, not LangChain agents
+- LiteLLM for all provider access; never call provider APIs directly
+- Supabase for relational/vector persistence
+- Neo4j for conversation graph persistence
+- Environment variables are documented in `docs/ENVIRONMENT.md`
+- Canonical feature list lives in `docs/FEATURES.md`
+- Agent state contract lives in `docs/STATE.md`
+- Dynamic context signals live in `docs/WORLD_SIGNALS.md`

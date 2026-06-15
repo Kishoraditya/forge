@@ -1,94 +1,121 @@
 # Task Format Guide
 
 ## What Is a Task
-A task is the smallest deployable unit of work. One task = one atomic change.
-It may be a single function, a single file, a single database migration,
-a single component, or a single config change. Never more than one thing.
+A task is the smallest deployable unit of work. One task equals one atomic
+change: one function, one file, one database migration, one component, or one
+config change. If it is larger, split it.
 
 ## Task ID Convention
-[PHASE]-[FEATURE]-[SEQUENCE]
-Example: P0-F001-001, P1-F009-003
+`[PHASE]-[FEATURE]-[SEQUENCE]`
 
-## Task File Template (used in BACKLOG.md, IN_PROGRESS.md, DONE.md)
+Examples:
+- `P0-F001-001`
+- `P1-F009-003`
 
+## Mandatory Task Template
+
+```markdown
 ---
-### [TASK_ID] — [Short Title]
+### [TASK_ID] - [Short Title]
 
+**Feature**: FXXX - [Feature Name]
 **Spec**: specs/phase-X/FXXX-name.spec.md
+**Branch**: feat/FXXX-short-name
 **Assigned to**: [human / claude-code / cursor / codex]
 **Status**: [backlog / in-progress / in-review / done / blocked]
-**Estimated**: [S = <30min | M = 30-90min | L = 90min+]
+**Estimated**: [S = <30min | M = 30-90min | L = split before work]
+**Estimated tokens**: [low / medium / high]
 **Actual**: [fill when done]
 **Depends on**: [task_ids | none]
 
-**What to do (one sentence)**:
-Create `backend/app/services/session_service.py` with `create_session()` function.
+**Goal**:
+[One sentence describing the outcome.]
 
-**Acceptance checklist**:
-- [ ] File created at correct path
-- [ ] Function signature matches spec AC1
-- [ ] Docstring present (see CONVENTIONS.md)
-- [ ] Unit test written and passing
-- [ ] No new imports added without updating pyproject.toml
-- [ ] CONTEXT.md updated after completion
-- [ ] `turns/Turn-XX-stop.md` updated
+**Files allowed**:
+- `path/to/file.py`
+- `path/to/test_file.py`
 
-**Context needed**:
-- Read: specs/phase-0/F004-session-management.spec.md
-- Read: docs/CONVENTIONS.md (docstring format)
-- Reference: backend/app/models/session.py (Pydantic schema)
+**Files forbidden**:
+- Everything else unless the human updates this task first.
 
-**Do not**:
-- Implement session expiry (that is P0-F004-003, a separate task)
-- Modify database schema (that is P0-F004-001)
+**Context required**:
+- Read: `specs/phase-X/FXXX-name.spec.md`
+- Read: `docs/CONVENTIONS.md`
+- Read: [only the relevant source files]
+
+**Implementation acknowledgment required before edits**:
+- [ ] Spec file read
+- [ ] Task ID stated
+- [ ] Files allowed stated
+- [ ] Files forbidden stated
+- [ ] Test plan stated
+
+**What to do**:
+[Exact atomic change.]
+
+**Tests required**:
+- [ ] [Specific test command or test file]
+
+**Acceptance criteria**:
+- [ ] [Binary, testable condition]
+- [ ] [Binary, testable condition]
+
+**Dependency review**:
+- [ ] No new dependency added
+- [ ] If dependency added: justification, alternatives, security/license, size impact, and package files updated
 
 **Definition of done**:
-`pytest tests/unit/test_session_service.py` passes.
-Function is importable. Docstring present.
-
-**Handoff note** (if switching agents mid-task):
-Stopped at [function/line], next step is [X], test failing at [Y].
-
----
-
-## Rules for Tasks
-1. Tasks in IN_PROGRESS.md: maximum 3 at any time
-2. A task is not "done" until all checklist items are checked
-3. Blocked tasks must have a blocker description
-4. Human tasks go in HUMAN_TASKS.md, not the main lists
-5. Add to PARKING_LOT.md anything that comes up but isn't scheduled
-6. Always include `Depends on` field to prevent ordering mistakes
-
-## Task Sizing Guide
-| Size | Time | Example |
-|------|------|---------|
-| S | <30min | Add a Pydantic model field, write one unit test, update one import |
-| M | 30-90min | Write one service function + its test, create one API endpoint |
-| L | 90min+ | Split this task. If you can't, it's a design problem. |
-
-## Task Assignment Decision
-| Task Type | Assign To |
-|-----------|-----------|
-| Write boilerplate/scaffolding | Agent (Claude Code) |
-| Implement a function from spec | Agent |
-| Write unit tests for a function | Agent |
-| Write integration tests | Agent |
-| Create env files, fill secrets | Human |
-| Make service accounts (APIs) | Human |
-| Review + approve agent output | Human |
-| Manual test flows | Human |
-| Architectural decisions | Human |
-| Docker Compose initial setup | Human |
-| Database migration SQL | Human reviews, agent drafts |
-| ADR writing | Human decides, agent drafts |
-
-## Definition of Done Checklist
 - [ ] Code implemented
 - [ ] Unit tests pass
-- [ ] Integration tests pass (if applicable)
-- [ ] Docs updated
-- [ ] CONTEXT.md updated
-- [ ] `turns/Turn-XX-stop.md` updated
-- [ ] Manual test flow documented (if new feature)
-- [ ] Acceptance criteria met
-- [ ] Human approved
+- [ ] Integration tests pass, if applicable
+- [ ] Lint passes for touched area
+- [ ] Types pass for touched area
+- [ ] Spec requirement satisfied
+- [ ] `docs/CONTEXT.md` updated
+- [ ] `tasks/IN_PROGRESS.md` updated
+- [ ] `turns/Turn-XX-stop.md` written
+- [ ] Human review completed
+
+**Do not**:
+- Refactor unrelated code
+- Touch files outside "Files allowed"
+- Add unlisted behavior
+
+**Handoff note**:
+[If switching agents mid-task: stopped at file/function/line, next step, failing test.]
+
+---
+```
+
+## Rules For Tasks
+1. `IN_PROGRESS.md` has maximum 3 active tasks.
+2. A task is not done until every Definition of Done item is checked.
+3. Blocked tasks must include the blocker and the required human action.
+4. Human tasks go in `HUMAN_TASKS.md`, not the main task lists.
+5. Add unscheduled ideas to `PARKING_LOT.md`.
+6. Always include dependencies to prevent ordering mistakes.
+7. Always include allowed and forbidden files.
+8. Group tasks for the same feature on the same feature branch.
+
+## Task Sizing Guide
+
+| Size | Time | Example |
+|---|---:|---|
+| S | <30 min | Add a model field plus one unit test |
+| M | 30-90 min | Write one service function plus its test |
+| L | 90 min+ | Split before work starts |
+
+## Assignment Decision
+
+| Task Type | Assign To |
+|---|---|
+| Boilerplate/scaffolding | Agent |
+| Function from spec | Agent |
+| Unit/integration tests | Agent |
+| Env files and secrets | Human |
+| Service accounts/API keys | Human |
+| Review and approval | Human |
+| Manual test flows | Human |
+| Architectural decisions | Human decides, agent drafts |
+| Database migration SQL | Agent drafts, human reviews |
+| ADR writing | Human decides, agent drafts |

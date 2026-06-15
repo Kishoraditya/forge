@@ -98,7 +98,7 @@ def create_session(model_alias: str, credit_budget_usd: float) -> Session:
 - **Maximum file length**: 300 lines. If a file grows beyond 300 lines, extract logic into submodules.
 - **Maximum function length**: 50 lines. If a function is longer than 50 lines, extract sub-helpers.
 - **No business logic in API route handlers**: API routes in `backend/app/api/` must remain extremely thin, handling only input validation/parsing and dispatching to services.
-- **No direct database calls outside `db/`**: Supabase/ORM queries must be situated inside the `db` or `services` layers. LangGraph nodes do not query tables directly.
+- **No direct database calls outside `db/`**: Supabase/ORM queries must originate in `backend/app/db/`. Services call db modules. API routes call services. LangGraph/core code calls services and never queries tables directly.
 - **No hardcoded strings**: Use config templates, schemas, or constant definitions.
 - **Strict import structures**: All imports must be absolute. No relative imports are allowed.
 - **Clean __init__.py files**: Do not add business or mapping logic inside `__init__.py` files. Keep them for clean namespace exports.
