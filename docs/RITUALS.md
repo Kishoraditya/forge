@@ -1,0 +1,84 @@
+# Development Rituals
+
+These ceremonies are non-negotiable. They keep context alive and prevent drift.
+
+## Session Start Ritual
+1. Create the next `turns/Turn-XX-start.md`.
+2. Open `docs/CONTEXT.md` and read it in full.
+3. Open `tasks/IN_PROGRESS.md`.
+4. Open the latest previous file in `turns/`.
+5. If continuing a task: re-read the spec file and task description.
+6. If starting new: pick from `BACKLOG.md`, move to `IN_PROGRESS.md`.
+7. Begin.
+
+## Session End Ritual
+1. Is the current task done?
+   - Yes: move it to `DONE.md`, check all checklist items, note actual time.
+   - No: note where you stopped in `IN_PROGRESS.md`.
+2. Update `docs/CONTEXT.md`.
+3. Create the matching `turns/Turn-XX-stop.md`.
+4. Run `make test` when code changed and note pass/fail in `CONTEXT.md`.
+5. Commit everything after human review.
+6. Check `PARKING_LOT.md` for new ideas.
+
+## Per-Task Ritual
+
+### Before
+- Read spec AC list.
+- Read task "context needed" files.
+- Confirm task is S or M sized. If L, split first.
+
+### During
+- Write test stubs first.
+- Implement to make tests pass.
+- Check each AC as you go.
+- Update the current turn stop file if the task pauses or blocks.
+
+### After
+- Run tests locally.
+- Review diff yourself before asking human to review.
+- Add to `DONE.md`.
+- If you discovered anything, add it to `PARKING_LOT.md`.
+
+## Per-Phase Ritual
+1. All tasks in `DONE.md` for that phase?
+2. All spec ACs checked off?
+3. Run full test suite, record result in `reports/`.
+4. Execute all `MANUAL_TESTING.md` flows for the phase.
+5. Update `ARCHITECTURE.md` with anything that changed.
+6. Write a phase retrospective in `docs/adr/`.
+7. Update `README.md` with newly available capabilities.
+8. Tag the commit: `git tag phase-N-complete`.
+9. Create specs for next phase.
+10. Populate `BACKLOG.md` for next phase.
+
+## Weekly Sanity Check
+- Is `CONTEXT.md` accurate?
+- Is `IN_PROGRESS.md` under 3 tasks?
+- Is the latest file in `turns/` still relevant?
+- Any items in `PARKING_LOT.md` ready to schedule?
+- Does `make test` still pass?
+
+## Doc Update Rules
+
+| When | What to Update |
+|---|---|
+| Task completed | `DONE.md` + `CONTEXT.md` + `turns/Turn-XX-stop.md` |
+| Task started | `IN_PROGRESS.md` + `turns/Turn-XX-start.md` |
+| Agent turn starts | `turns/Turn-XX-start.md` |
+| Agent turn ends | `turns/Turn-XX-stop.md` |
+| Blocker found | `BLOCKED.md` + `turns/Turn-XX-stop.md` |
+| Idea surfaces | `PARKING_LOT.md` |
+| Phase done | `CONTEXT.md` + `CHANGELOG.md` + tag |
+| Manual step done | `ENVIRONMENT.md` |
+
+## ADR Trigger List
+Write an ADR whenever a choice would be confusing to a future developer who only
+sees the code. Expected ADRs:
+- ADR-001: LangGraph over AutoGen
+- ADR-002: Option B conversation graph
+- ADR-003: LiteLLM for routing
+- ADR-004: Supabase over self-hosted Postgres
+- ADR-005: e2b vs Docker subprocess for sandbox
+- ADR-006: Neo4j over Memgraph
+- ADR-007: Temporal for durable workflows

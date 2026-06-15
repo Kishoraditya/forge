@@ -1,0 +1,83 @@
+# Forge Project — Cursor Rules
+
+## Project Context
+Read CLAUDE.md before every file edit. Read docs/CONVENTIONS.md before writing any code.
+Forge is a self-hosted, BYOK, multi-session AI agent workbench. Option B conversation graph architecture.
+
+## File Rules
+- All Python files must start with the developer signature header from CONVENTIONS.md
+- All TypeScript/TSX files must start with the developer signature header from CONVENTIONS.md
+- All functions must have complete docstrings (see CONVENTIONS.md for format)
+- Max 300 lines per file, max 50 lines per function
+- No logic in __init__.py files — imports and __all__ only
+- One class per file unless tightly coupled (e.g., exceptions)
+
+## Behavior Rules
+- Only modify files listed in the current task description (tasks/IN_PROGRESS.md)
+- If a change requires a new dependency, add it to pyproject.toml AND note it in the task
+- Write tests before or alongside implementation, never after separately
+- Never create business logic in API route files — put it in services/
+- No direct database calls outside db/ layer
+- No hardcoded strings — use constants or config
+- All async functions must be awaited (no fire-and-forget without Celery)
+- Never call LLM provider APIs directly — always go through LiteLLM
+- Never use LangChain agents — use LangGraph for orchestration
+
+## Navigation
+- API routes: backend/app/api/
+- Business logic: backend/app/services/
+- LangGraph flows: backend/app/core/
+- Pydantic models: backend/app/models/
+- Database: backend/app/db/
+- Graph (Neo4j): backend/app/graph/
+- Tools: backend/app/tools/
+- Tests: backend/tests/
+- Specs: specs/phase-X/
+- Tasks: tasks/
+- Architecture: docs/ARCHITECTURE.md
+- Conventions: docs/CONVENTIONS.md
+
+## Import Ordering
+1. Standard library imports
+2. Third-party imports
+3. Local application imports
+Each group separated by a blank line. Alphabetical within groups.
+
+## Naming Conventions
+- Python files: snake_case.py
+- Python classes: PascalCase
+- Python functions: snake_case
+- Python constants: UPPER_SNAKE_CASE
+- TypeScript files: kebab-case.ts / kebab-case.tsx
+- React components: PascalCase
+- API route files: snake_case.py
+- Environment variables: UPPER_SNAKE_CASE
+- Database tables: snake_case
+- Neo4j node labels: PascalCase
+- Feature branches: feature/FXXX-short-description
+- Fix branches: fix/FXXX-short-description
+
+## Commit Messages
+Use Conventional Commits format:
+```
+type(scope): short description
+
+[optional body]
+[optional footer]
+```
+Types: feat, fix, docs, style, refactor, test, chore, ci
+
+## Error Handling
+- Use custom exception classes from backend/app/core/exceptions.py
+- Never catch bare `except:` — always specify the exception type
+- Log errors with structured logging (structlog)
+- Return appropriate HTTP status codes from API handlers
+- Include correlation IDs in error responses
+
+## When in Doubt
+Read the spec file. The spec is the authority.
+Check docs/ARCHITECTURE.md for system design questions.
+Check docs/CONVENTIONS.md for code style questions.
+
+## TURN.md
+Update TURN.md as your first and last action in every response.
