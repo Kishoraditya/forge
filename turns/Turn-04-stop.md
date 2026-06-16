@@ -23,7 +23,7 @@ Docs-only portions of this turn: no separate test run required beyond above.
 - tasks/DONE.md, IN_PROGRESS.md, CONTEXT.md, KNOWN_ISSUES.md
 
 ## Commit
-Pending — `feat(F001): P0-F001-001 settings and branch-only workflow`
+`c89eeb6` — `feat(F001): Phase 0 specs, workflow rules, and settings module`
 
 ## Next Action
 P0-F001-002 application exceptions on same branch.
