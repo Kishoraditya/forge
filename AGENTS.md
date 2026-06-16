@@ -13,9 +13,9 @@ architecture.
 
 ## Current Phase
 - Phase: 0 - Core Engine
-- Status: not started
-- Human gate: complete `tasks/HUMAN_TASKS.md` HT-001 through HT-008 before
-  AI-assisted Phase 0 spec/task work
+- Status: in progress (F001 scaffolding)
+- Human gate: HT-001 through HT-008 complete
+- Python: `poetry env use python3.12` (required; 3.14 breaks dependencies)
 
 ## Architecture In 10 Lines
 ```text
@@ -49,6 +49,11 @@ Every agent response must create numbered turn files:
 
 Use the next available zero-padded turn number. If a session crashes, resume
 from the newest file in `turns/`.
+
+Turn stop files must record tests run or explicitly state when tests are not
+required. Commit each completed turn on a feature branch — never directly on
+`main` (see `docs/GIT_WORKFLOW.md`). Log material decisions in
+`docs/DECISIONS_LOG.md`.
 
 ## Implementation Acknowledgment
 Before any implementation edit, state these in the user-visible update or turn

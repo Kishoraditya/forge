@@ -25,6 +25,11 @@ feature task needs them.
   ```bash
   bash scripts/bootstrap.sh
   ```
+- [ ] **Pin Python 3.12 for Poetry** (required — 3.14 breaks dependencies):
+  ```bash
+  poetry env use python3.12
+  poetry install
+  ```
 - [ ] **Verify Stack is Live**:
   ```bash
   make dev

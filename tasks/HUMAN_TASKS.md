@@ -14,7 +14,7 @@ that can consume and test it.
 
 ### HT-001 - Initialize Git Repository
 **Priority**: P0
-**Status**: not started
+**Status**: complete
 **Estimated**: 5 min
 **Run after automated task**: Scaffold is complete.
 **Blocks**: Safe review, commits, rollback, and all later automated work.
@@ -29,7 +29,7 @@ git commit -m "chore: initialize forge project structure and governance docs"
 
 ### HT-002 - Review & Approve Scaffold
 **Priority**: P0
-**Status**: not started
+**Status**: complete
 **Estimated**: 30 min
 **Run after automated task**: HT-001 initial commit.
 **Blocks**: AI-assisted Phase 0 spec drafting.
@@ -44,7 +44,7 @@ git commit -m "chore: initialize forge project structure and governance docs"
 
 ### HT-003 - Create Local Environment File
 **Priority**: P0
-**Status**: not started
+**Status**: complete
 **Estimated**: 10 min
 **Run after automated task**: HT-002 scaffold approval.
 **Blocks**: Local process startup, settings parsing, and future integration tests.
@@ -64,7 +64,7 @@ explicitly targets them.
 
 ### HT-004 - Install Local Tooling
 **Priority**: P0
-**Status**: not started
+**Status**: complete
 **Estimated**: 15 min
 **Run after automated task**: HT-003 `.env.local`.
 **Blocks**: Running tests, linters, scripts, and generated project scaffolds.
@@ -81,7 +81,7 @@ Install Node 20+ and Docker Desktop if they are not already available.
 
 ### HT-005 - Initialize Frontend App
 **Priority**: P0
-**Status**: not started
+**Status**: complete
 **Estimated**: 15 min
 **Run after automated task**: HT-004 tooling install.
 **Blocks**: Frontend specs/tasks that expect a real Next.js app to exist.
@@ -98,7 +98,7 @@ Commit the generated frontend scaffold separately after review.
 
 ### HT-006 - Verify Local Prerequisites
 **Priority**: P0
-**Status**: not started
+**Status**: complete
 **Estimated**: 10 min
 **Run after automated task**: HT-005 frontend scaffold.
 **Blocks**: AI agents running local checks without rediscovering machine setup issues.
@@ -118,7 +118,7 @@ task creates the actual dev stack.
 
 ### HT-007 - Provision Supabase Project
 **Priority**: P0
-**Status**: not started
+**Status**: complete
 **Estimated**: 15 min
 **Run after automated task**: HT-006 local prerequisite check.
 **Blocks**: BYOK storage, session persistence, schema work, and later integration tests.
@@ -137,7 +137,7 @@ is enough for the first AI-assisted phase.
 
 ### HT-008 - Get One LLM Provider API Key
 **Priority**: P0
-**Status**: not started
+**Status**: complete
 **Estimated**: 10 min
 **Run after automated task**: HT-007 Supabase project setup.
 **Blocks**: Live BYOK validation and end-to-end LLM smoke testing.
