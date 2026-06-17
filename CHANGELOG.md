@@ -29,6 +29,8 @@ require a CHANGELOG line unless it is investor- or user-visible.
 
 ### Fixed
 - Frontend `package-lock.json` synced for `npm ci` on CI (Node 24 / npm 11)
+- Pin `@emnapi/core` and `@emnapi/runtime` at 1.11.1 for Linux `npm ci` parity
+- CI contract tests (`backend/tests/ci/`) and `make ci-check` local parity target
 
 ## [0.0.0] — 2026-06-12
 
