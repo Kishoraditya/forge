@@ -23,6 +23,7 @@ class SessionCreateResponse(BaseModel):
     id: UUID
     budget_remaining_usd: float
     expires_at: datetime
+    model_alias: str
 
 
 class SessionStatus(BaseModel):

@@ -65,6 +65,7 @@ class SessionService:
             id=row.id,
             budget_remaining_usd=row.budget_remaining_usd,
             expires_at=row.expires_at,
+            model_alias=row.model_alias,
         )
 
     def _ensure_active(self, session_id: UUID) -> SessionRow:

@@ -32,6 +32,7 @@ async def test_create_and_get_session(client: AsyncClient) -> None:
     assert status["id"] == session_id
     assert status["budget_remaining_usd"] == 0.10
     assert status["status"] == "active"
+    assert body["model_alias"] == "fast"
 
 
 @pytest.mark.asyncio

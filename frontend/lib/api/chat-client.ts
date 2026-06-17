@@ -36,6 +36,14 @@ export type SessionStatus = {
   model_alias: string;
 };
 
+/** Thrown when a stored session id no longer exists on the backend. */
+export class SessionNotFoundError extends Error {
+  constructor() {
+    super("Session not found");
+    this.name = "SessionNotFoundError";
+  }
+}
+
 export async function createSession(): Promise<SessionCreateResponse> {
   const res = await fetch(`${API_BASE}/api/sessions`, { method: "POST" });
   if (!res.ok) throw new Error(`Session create failed: ${res.status}`);
@@ -44,6 +52,7 @@ export async function createSession(): Promise<SessionCreateResponse> {
 
 export async function getSessionStatus(sessionId: string): Promise<SessionStatus> {
   const res = await fetch(`${API_BASE}/api/sessions/${sessionId}`);
+  if (res.status === 404) throw new SessionNotFoundError();
   if (!res.ok) throw new Error(`Session status failed: ${res.status}`);
   return res.json() as Promise<SessionStatus>;
 }
