@@ -13,7 +13,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import health, inference, messages, sessions
+from app.api import admin_auth, health, inference, messages, sessions
 from app.config import get_settings
 from app.core.exception_handlers import register_exception_handlers
 from app.core.llm_credentials import configure_litellm_runtime, sync_provider_keys_to_env
@@ -47,6 +47,7 @@ def create_app() -> FastAPI:
     app.add_middleware(CorrelationIdMiddleware)
     register_exception_handlers(app)
     app.include_router(health.router)
+    app.include_router(admin_auth.router)
     app.include_router(inference.router)
     app.include_router(sessions.router)
     app.include_router(messages.router)

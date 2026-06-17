@@ -27,3 +27,8 @@ Completed tasks with date and outcome notes.
 ### P0-F005-001 through P0-F005-007 — Conversation UI
 **Completed**: 2026-06-17 | **Branch**: feat/F003-f004-f005-conversation
 **Outcome**: message repo/service/API, SSE chat client, chat components, home page
+**Verified**: 2026-06-17 — 41 tests, PR #3 CI pass, manual E2E with OpenRouter
+
+### P0-F006-001 through P0-F006-005 — Admin auth (backend + frontend)
+**Completed**: 2026-06-17 | **Branch**: feat/F006-admin-auth
+**Outcome**: JWT `require_admin`, `/api/admin/me`, Supabase login, middleware (RLS pending F008)

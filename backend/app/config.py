@@ -37,6 +37,8 @@ class Settings(BaseSettings):
     supabase_url: str
     supabase_anon_key: str
     supabase_service_role_key: str
+    supabase_jwt_secret: str | None = Field(default=None)
+    admin_email: str | None = Field(default=None)
     anthropic_api_key: str | None = Field(default=None)
     openrouter_api_key: str | None = Field(default=None)
     default_session_budget_usd: float = Field(default=0.10)

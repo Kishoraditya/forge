@@ -34,3 +34,7 @@ DEFAULT_MODEL_FOR_SESSION = "fast"
 
 # API
 CORRELATION_ID_HEADER = "X-Correlation-ID"
+
+# Auth (F006)
+JWT_AUDIENCE_AUTHENTICATED = "authenticated"
+ADMIN_ROLE = "admin"
