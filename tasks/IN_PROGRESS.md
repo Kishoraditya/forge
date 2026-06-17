@@ -1,16 +1,17 @@
 # In Progress
 
-**Branch**: `feat/F006-admin-auth`
+**Branch**: `feat/F007-rag`
 
 ---
 
-### P0-F006-001 through P0-F006-005 — Admin authentication
+### P0-F007-002 — Chunking service
 
-**Spec**: `specs/phase-0/F006-admin-auth.spec.md`
-**Status**: in progress (RLS AC5 deferred to F008-006)
+**Spec**: `specs/phase-0/F007-rag-foundation.spec.md`
+**Status**: in progress
 
 **Tests required**:
 ```
-poetry run pytest backend/tests/unit/test_auth.py backend/tests/integration/test_admin_auth_api.py -v
-cd frontend && npm run lint && npm run build
+poetry run pytest backend/tests/unit/test_chunking_service.py -v
 ```
+
+**Next**: P0-F007-003 embedding service, P0-F007-001 document repository
