@@ -1,20 +1,13 @@
 # In Progress
 
-Maximum 3 active tasks at any time. Move from BACKLOG.md when starting.
-
 **Branch**: `feat/F001-scaffolding`
-
-## Handoff Template
-
-When pausing mid-task, copy from `.forge/templates/handoff.md` into the task
-entry below.
 
 ---
 
-### P0-F001-002 — Application exceptions
+### P0-F001-003 — Structured logging
 
 **Spec**: `specs/phase-0/F001-scaffolding.spec.md`
-**Status**: backlog next
+**Status**: next
 **Depends on**: P0-F001-001 (done)
 
-**Tests required**: `poetry run pytest backend/tests/unit/test_exceptions.py -v`
+**Tests required**: `poetry run pytest backend/tests/unit/test_logging.py -v`

@@ -5,7 +5,7 @@
 # Run `make help` to see all available commands.
 # =============================================================================
 
-.PHONY: dev test lint spec task context flow format type-check audit help
+.PHONY: dev test lint spec task context flow format type-check audit help ci-check ci-contract ci-check-backend ci-check-frontend
 
 ## ---- Local Development ----
 
@@ -64,6 +64,24 @@ audit:
 ## Run all pre-commit hooks
 pre-commit:
 	pre-commit run --all-files
+
+## ---- CI Parity (mirrors .github/workflows/ci.yml) ----
+
+## Run CI contract tests only
+ci-contract:
+	poetry run pytest backend/tests/ci/ -v
+
+## Backend CI checks
+ci-check-backend:
+	poetry run pytest backend/tests/unit/ -v
+	cd backend && poetry run ruff check . && poetry run mypy app/
+
+## Frontend CI checks
+ci-check-frontend:
+	cd frontend && npm ci && npm run lint && npm run build
+
+## Full local CI parity check
+ci-check: ci-contract ci-check-backend ci-check-frontend
 
 ## ---- Scaffolding ----
 

@@ -76,7 +76,8 @@ These ceremonies are non-negotiable. They keep context alive and prevent drift.
 | Material decision | `docs/DECISIONS_LOG.md` |
 | Blocker found | `BLOCKED.md` + `turns/Turn-XX-stop.md` |
 | Idea surfaces | `PARKING_LOT.md` |
-| Phase done | `CONTEXT.md` + `CHANGELOG.md` + tag |
+| Phase done | `CONTEXT.md` + `CHANGELOG.md` (cut version) + tag |
+| Notable merge to `main` | Optional: move items from `[Unreleased]` in `CHANGELOG.md`; update `temp.md` PR body |
 | Manual step done | `ENVIRONMENT.md` |
 
 ## ADR Trigger List

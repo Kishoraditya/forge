@@ -46,6 +46,7 @@ the feature spec.
 ## Infra Changes
 
 - Validate Docker Compose syntax for changed compose files.
+- Run `make ci-contract` or `make ci-check` before opening a PR (mirrors GitHub Actions).
 - Validate Terraform formatting/plan for changed Terraform files.
 - Do not apply production infrastructure from an agent task.
 
