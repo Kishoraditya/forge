@@ -22,3 +22,4 @@ cd frontend && npm run build
 ## Notes
 - LiteLLM mocked via autouse conftest fixture; in-memory store until F008.
 - Manual E2E (backend :8000 + frontend :3000) deferred to user.
+- Commit: `c54b942`
