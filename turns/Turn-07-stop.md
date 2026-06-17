@@ -12,7 +12,7 @@ cd frontend && npm ci && npm run build          # pass (clean install)
 Tests: not required for temp.md / CHANGELOG-only paths beyond above.
 
 ## Commit
-Pending
+`93d37bd` — `fix(ci): pin emnapi 1.11.1 and add CI contract tests`
 
 ## Next
 Push branch; P0-F001-003 structured logging
