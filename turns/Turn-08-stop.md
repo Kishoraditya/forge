@@ -7,7 +7,7 @@ poetry run pytest backend/tests/unit/ -v                         # 10 passed
 ```
 
 ## Commit
-Pending — `fix(ci): mypy pydantic plugin for Settings`
+`4282050` — `fix(ci): enable pydantic mypy plugin for Settings`
 
 ## Next
 Push; P0-F001-003 structured logging
