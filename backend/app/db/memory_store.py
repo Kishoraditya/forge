@@ -54,12 +54,61 @@ class LedgerEntry:
 
 
 @dataclass
+class DocumentRow:
+    """Uploaded document metadata."""
+
+    id: UUID
+    filename: str
+    mime_type: str
+    size_bytes: int
+    created_at: datetime
+
+
+@dataclass
+class DocumentChunkRow:
+    """Document chunk with optional embedding vector."""
+
+    id: UUID
+    document_id: UUID
+    content: str
+    embedding: list[float] | None
+    chunk_index: int
+
+
+@dataclass
+class ApiKeyRow:
+    """Encrypted provider API key."""
+
+    id: UUID
+    provider: str
+    encrypted_key: str
+    is_active: bool
+    last_validated_at: datetime | None
+    created_at: datetime
+    updated_at: datetime
+
+
+@dataclass
+class ModelAliasRow:
+    """Model alias mapping."""
+
+    alias: str
+    provider: str
+    model_name: str
+    is_default: bool
+
+
+@dataclass
 class MemoryStore:
     """Process-local in-memory data store (F008 placeholder)."""
 
     sessions: dict[UUID, SessionRow] = field(default_factory=dict)
     messages: dict[UUID, list[MessageRow]] = field(default_factory=dict)
     ledger: list[LedgerEntry] = field(default_factory=list)
+    documents: dict[UUID, DocumentRow] = field(default_factory=dict)
+    document_chunks: dict[UUID, list[DocumentChunkRow]] = field(default_factory=dict)
+    api_keys: dict[str, ApiKeyRow] = field(default_factory=dict)
+    model_aliases: dict[str, ModelAliasRow] = field(default_factory=dict)
     counters: dict[str, int] = field(default_factory=dict)
 
 

@@ -4,14 +4,10 @@
 
 ---
 
-### P0-F007-002 — Chunking service
+### Phase 0 finalize — F001/F008/F002/F007 remainder
 
-**Spec**: `specs/phase-0/F007-rag-foundation.spec.md`
-**Status**: in progress
+**Status**: complete (in-memory persistence default; Postgres via `DATABASE_URL` + `make migrate`)
 
-**Tests required**:
-```
-poetry run pytest backend/tests/unit/test_chunking_service.py -v
-```
+**Tests**: 55 passed | frontend lint + build pass
 
-**Next**: P0-F007-003 embedding service, P0-F007-001 document repository
+**Manual**: `make migrate` with `DATABASE_URL` set → Supabase schema + RLS

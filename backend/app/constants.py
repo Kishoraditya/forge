@@ -38,3 +38,17 @@ CORRELATION_ID_HEADER = "X-Correlation-ID"
 # Auth (F006)
 JWT_AUDIENCE_AUTHENTICATED = "authenticated"
 ADMIN_ROLE = "admin"
+
+# RAG (F007)
+DEFAULT_EMBEDDING_MODEL = "text-embedding-3-small"
+DEFAULT_EMBEDDING_DIMENSIONS = 1536
+DEFAULT_RAG_TOP_K = 5
+MAX_UPLOAD_BYTES = 5 * 1024 * 1024
+ALLOWED_UPLOAD_MIME_TYPES = frozenset(
+    {"text/plain", "text/markdown", "text/csv", "application/pdf"},
+)
+
+# BYOK (F002)
+BYOK_PROVIDERS = frozenset(
+    {"anthropic", "openai", "openrouter", "google", "mistral", "deepseek"},
+)

@@ -24,6 +24,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Link href="/" className="hover:underline">
               Chat
             </Link>
+            <Link href="/admin/byok" className="hover:underline">
+              BYOK
+            </Link>
+            <Link href="/admin/documents" className="hover:underline">
+              Documents
+            </Link>
             <Link href="/admin/login" className="hover:underline">
               Login
             </Link>

@@ -39,7 +39,10 @@ class Settings(BaseSettings):
     supabase_service_role_key: str
     supabase_jwt_secret: str | None = Field(default=None)
     admin_email: str | None = Field(default=None)
+    database_url: str | None = Field(default=None)
+    byok_encryption_key: str | None = Field(default=None)
     anthropic_api_key: str | None = Field(default=None)
+    openai_api_key: str | None = Field(default=None)
     openrouter_api_key: str | None = Field(default=None)
     default_session_budget_usd: float = Field(default=0.10)
     session_ttl_seconds: int = Field(default=7200)
@@ -50,6 +53,18 @@ class Settings(BaseSettings):
     def cors_origin_list(self) -> list[str]:
         """Parse comma-separated CORS origins."""
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
+
+    @property
+    def use_postgres(self) -> bool:
+        """True when a Postgres DATABASE_URL is configured."""
+        return bool(self.database_url and self.database_url.strip())
+
+    @property
+    def sync_database_url(self) -> str | None:
+        """Return sync SQLAlchemy URL for Alembic migrations."""
+        if not self.database_url:
+            return None
+        return self.database_url.replace("+asyncpg", "").replace("postgresql+asyncpg", "postgresql")
 
     model_config = SettingsConfigDict(
         env_file=(PROJECT_ROOT / ENV_LOCAL_FILENAME, PROJECT_ROOT / ".env"),

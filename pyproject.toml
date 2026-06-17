@@ -76,6 +76,9 @@ python-multipart = "^0.0.20"
 python-dotenv = "^1.1.1"
 weasyprint = "^66.0"
 pyyaml = "^6.0.3"
+cryptography = "^46.0.3"
+pgvector = "^0.4.2"
+pypdf = "^6.0.0"
 
 # NLP (Entity Extraction)
 spacy = "^3.8.7"
@@ -141,6 +144,10 @@ disable_error_code = ["misc"]
 [[tool.mypy.overrides]]
 module = ["app.db.redis_client"]
 disable_error_code = ["no-untyped-call"]
+
+[[tool.mypy.overrides]]
+module = ["app.db.base"]
+disable_error_code = ["misc"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

@@ -13,12 +13,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import admin_auth, health, inference, messages, sessions
+from app.api import admin_auth, admin_byok, admin_documents, health, inference, messages, sessions
 from app.config import get_settings
 from app.core.exception_handlers import register_exception_handlers
 from app.core.llm_credentials import configure_litellm_runtime, sync_provider_keys_to_env
 from app.core.logging import configure_logging
 from app.core.middleware import CorrelationIdMiddleware
+from app.services.litellm_config_service import LiteLLMConfigService
 
 
 def create_app() -> FastAPI:
@@ -36,6 +37,7 @@ def create_app() -> FastAPI:
     configure_litellm_runtime()
     settings = get_settings()
     sync_provider_keys_to_env(settings)
+    LiteLLMConfigService().sync_to_env()
     app = FastAPI(title="Forge", version="0.1.0")
     app.add_middleware(
         CORSMiddleware,
@@ -48,6 +50,8 @@ def create_app() -> FastAPI:
     register_exception_handlers(app)
     app.include_router(health.router)
     app.include_router(admin_auth.router)
+    app.include_router(admin_byok.router)
+    app.include_router(admin_documents.router)
     app.include_router(inference.router)
     app.include_router(sessions.router)
     app.include_router(messages.router)
