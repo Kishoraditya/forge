@@ -76,6 +76,30 @@ export type StreamHandlers = {
   onError: (message: string) => void;
 };
 
+type SsePayload = {
+  delta?: string;
+  done?: boolean;
+  usage?: { cost_usd?: number };
+};
+
+/**
+ * Parse one SSE `data:` line; returns null for empty or malformed payloads.
+ */
+function parseSseDataLine(line: string): SsePayload | null {
+  if (!line.startsWith("data:")) {
+    return null;
+  }
+  const json = line.slice(5).trim();
+  if (!json) {
+    return null;
+  }
+  try {
+    return JSON.parse(json) as SsePayload;
+  } catch {
+    return null;
+  }
+}
+
 /** Parse SSE stream from POST /messages. */
 export async function streamMessage(
   sessionId: string,
@@ -107,19 +131,10 @@ export async function streamMessage(
     buffer = parts.pop() ?? "";
     for (const part of parts) {
       const line = part.trim();
-      if (!line.startsWith("data:")) continue;
-      const json = line.slice(5).trim();
-      try {
-        const payload = JSON.parse(json) as {
-          delta?: string;
-          done?: boolean;
-          usage?: { cost_usd?: number };
-        };
-        if (payload.delta) handlers.onDelta(payload.delta);
-        if (payload.done) handlers.onDone(payload.usage);
-      } catch {
-        /* ignore malformed chunks */
-      }
+      const payload = parseSseDataLine(line);
+      if (!payload) continue;
+      if (payload.delta) handlers.onDelta(payload.delta);
+      if (payload.done) handlers.onDone(payload.usage);
     }
   }
 }
@@ -148,12 +163,8 @@ export async function regenerateMessage(
     buffer = parts.pop() ?? "";
     for (const part of parts) {
       const line = part.trim();
-      if (!line.startsWith("data:")) continue;
-      const payload = JSON.parse(line.slice(5).trim()) as {
-        delta?: string;
-        done?: boolean;
-        usage?: { cost_usd?: number };
-      };
+      const payload = parseSseDataLine(line);
+      if (!payload) continue;
       if (payload.delta) handlers.onDelta(payload.delta);
       if (payload.done) handlers.onDone(payload.usage);
     }
