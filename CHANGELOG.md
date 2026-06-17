@@ -31,6 +31,7 @@ require a CHANGELOG line unless it is investor- or user-visible.
 - Frontend `package-lock.json` synced for `npm ci` on CI (Node 24 / npm 11)
 - Pin `@emnapi/core` and `@emnapi/runtime` at 1.11.1 for Linux `npm ci` parity
 - CI contract tests (`backend/tests/ci/`) and `make ci-check` local parity target
+- Mypy: enable `pydantic.mypy` plugin; fix `Settings()` strict `call-arg` on Linux CI
 
 ## [0.0.0] — 2026-06-12
 

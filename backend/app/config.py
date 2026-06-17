@@ -21,7 +21,7 @@ from app.constants import DEFAULT_ENVIRONMENT, ENV_LOCAL_FILENAME
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
-class Settings(BaseSettings):  # type: ignore[misc]
+class Settings(BaseSettings):
     """
     Application settings loaded from environment variables and `.env.local`.
 
