@@ -17,7 +17,7 @@ Frontend build: not re-run this turn (npm ci sufficient for CI fix).
 - Answered changelog cadence: per-phase release, optional Unreleased per merge
 
 ## Commit
-Pending
+`4ed314c` — `fix(ci): sync frontend lockfile and align Node 24 in CI`
 
 ## Next
 P0-F001-003 structured logging
