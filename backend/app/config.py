@@ -37,6 +37,16 @@ class Settings(BaseSettings):
     supabase_url: str
     supabase_anon_key: str
     supabase_service_role_key: str
+    anthropic_api_key: str | None = Field(default=None)
+    default_session_budget_usd: float = Field(default=0.10)
+    session_ttl_seconds: int = Field(default=7200)
+    default_model_alias: str = Field(default="fast")
+    cors_origins: str = Field(default="http://localhost:3000")
+
+    @property
+    def cors_origin_list(self) -> list[str]:
+        """Parse comma-separated CORS origins."""
+        return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
 
     model_config = SettingsConfigDict(
         env_file=(PROJECT_ROOT / ENV_LOCAL_FILENAME, PROJECT_ROOT / ".env"),

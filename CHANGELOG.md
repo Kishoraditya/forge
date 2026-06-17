@@ -25,6 +25,10 @@ require a CHANGELOG line unless it is investor- or user-visible.
 - Governance: decision log, logging/validation frameworks, branch-only git flow, `.forge/` prompts
 - F001 P0-F001-001: Pydantic Settings module (`backend/app/config.py`)
 - F001 P0-F001-002: Application exception hierarchy (`backend/app/core/exceptions.py`)
+- F001 P0-F001-003–007: FastAPI app factory, structlog, correlation middleware, health endpoint
+- F003: LiteLLM inference router, rate limits, chat + streaming API
+- F004: Anonymous sessions, budget tracking, Redis/in-memory fallback, session store (frontend)
+- F005: Message CRUD, SSE streaming, chat UI with markdown rendering
 - CI workflow (Python 3.12 backend, Node 24 frontend)
 
 ### Fixed

@@ -347,9 +347,9 @@ docs/ENVIRONMENT.md — seed with known env vars
 AGENTS.md — like CLAUDE.md but for Codex
 README.md — brief public overview
 Prompt to give Claude Code for CLAUDE.md:
-Read docs/forge.md carefully. Create CLAUDE.md following the template 
-in docs/FORGE_DEV_FRAMEWORK.md section 4.1. The project is at Day 0, 
-Phase 0 not yet started. Hard cap: 200 lines. Include the 6-layer 
+Read docs/forge.md carefully. Create CLAUDE.md following the template
+in docs/FORGE_DEV_FRAMEWORK.md section 4.1. The project is at Day 0,
+Phase 0 not yet started. Hard cap: 200 lines. Include the 6-layer
 architecture diagram, folder map, and all non-negotiable rules.
 
 Step 3 — Initialize Git & Tooling (Human, 15 minutes)
@@ -363,7 +363,7 @@ poetry init  # follow prompts
 poetry add fastapi uvicorn pydantic langchain langgraph litellm dspy-ai
 poetry add --group dev pytest pytest-asyncio httpx ruff mypy black pre-commit
 
-# Frontend tooling  
+# Frontend tooling
 cd frontend
 npx create-next-app@latest . --typescript --tailwind --app
 npx shadcn-ui@latest init
@@ -450,7 +450,7 @@ Create specs/_template.spec.md:
 ### Happy Path
 - Input: ... → Expected output: ...
 
-### Edge Cases  
+### Edge Cases
 - Empty input → Expected: validation error, no side effects
 - Budget exceeded → Expected: graceful stop, log entry
 
@@ -469,7 +469,7 @@ Create tasks/_format.md:
 
 ## What Is a Task
 A task is the smallest deployable unit of work. One task = one atomic change.
-It may be a single function, a single file, a single database migration, 
+It may be a single function, a single file, a single database migration,
 a single component, or a single config change. Never more than one thing.
 
 ## Task ID Convention
@@ -481,10 +481,10 @@ Example: P0-F001-001, P1-F009-003
 ---
 ### [TASK_ID] — [Short Title]
 
-**Spec**: specs/phase-X/FXXX-name.spec.md  
-**Assigned to**: [human / claude-code / cursor / codex]  
-**Status**: [backlog / in-progress / in-review / done / blocked]  
-**Estimated**: [S = <30min | M = 30-90min | L = 90min+]  
+**Spec**: specs/phase-X/FXXX-name.spec.md
+**Assigned to**: [human / claude-code / cursor / codex]
+**Status**: [backlog / in-progress / in-review / done / blocked]
+**Estimated**: [S = <30min | M = 30-90min | L = 90min+]
 **Actual**: [fill when done]
 
 **What to do (one sentence)**:
@@ -526,12 +526,12 @@ This is the first significant agent task. Prompt:
 Read docs/forge.md (the full feature plan) and tasks/_format.md carefully.
 
 For Phase 0 features F001 through F008:
-1. Create one spec file per feature in specs/phase-0/ using the template 
+1. Create one spec file per feature in specs/phase-0/ using the template
    at specs/_template.spec.md. Fill all sections. Be specific.
    Each spec should have 3-6 acceptance criteria.
 
-2. Break each feature into atomic tasks (each <90 minutes of work for an 
-   experienced developer). Write each task in tasks/BACKLOG.md using the 
+2. Break each feature into atomic tasks (each <90 minutes of work for an
+   experienced developer). Write each task in tasks/BACKLOG.md using the
    format in tasks/_format.md.
 
 Rules:
@@ -540,7 +540,7 @@ Rules:
 - Do not create any source files
 - Only create spec files and add task entries to BACKLOG.md
 
-Start with F001. After F001's spec and tasks, pause and show me the output 
+Start with F001. After F001's spec and tasks, pause and show me the output
 before continuing to F002.
 
 Do this one feature at a time. Review each spec before asking for the next. This is the highest-leverage human review point in the whole process.
@@ -691,7 +691,7 @@ Session Start Ritual (Every Time You Open the Project)
 6. Begin
 
 Session End Ritual (Every Time You Close the Project)
-1. Is the current task done? 
+1. Is the current task done?
    → Yes: move to DONE.md, check all checklist items, note actual time
    → No: note where you stopped in the task description (IN_PROGRESS.md)
 2. Update CONTEXT.md (takes 3-5 minutes, use the template)
@@ -1328,4 +1328,3 @@ Chat UI + admin auth
 Document version: 1.0.0
  This is a living document — update the relevant section whenever the process evolves.
  Next: Run Step 1-4 from Section 5. Then use the agent prompt in Section 11 to create Phase 0 specs.
-
