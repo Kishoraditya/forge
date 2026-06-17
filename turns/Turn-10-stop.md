@@ -16,4 +16,4 @@ make ci-check (or ci-check-backend + ci-check-frontend)
 
 ## Notes
 - Manual E2E confirmed working with OpenRouter free models
-- Commit: TBD
+- Commit: `b8c4f27`
