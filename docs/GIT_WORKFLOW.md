@@ -78,3 +78,31 @@ Merge only after:
 
 Prefer squash merge for small task branches and regular merge for larger
 feature branches when preserving task-level commits matters.
+
+## Never Commit Directly to `main`
+
+All work — docs, specs, code, turn files — happens on a feature/fix/docs/chore
+branch. `main` receives changes only via reviewed PR merge.
+
+Exception: none for solo dev; use a short-lived branch even for doc-only turns.
+
+## Per-Turn Commit Rule
+
+When a turn completes (start + stop files written and task scope done):
+
+1. Ensure you are on the correct feature branch (not `main`).
+2. Stage all files touched in that turn.
+3. Commit with Conventional Commits message referencing task ID or turn.
+4. Push branch with `-u` if first push for that branch.
+
+Example:
+
+```bash
+git checkout feat/F001-scaffolding
+git add .
+git commit -m "feat(F001): P0-F001-001 settings module and workflow docs"
+git push -u origin feat/F001-scaffolding
+```
+
+Do not batch unrelated turns onto `main`. One turn = one commit minimum on the
+active feature branch.

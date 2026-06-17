@@ -1,10 +1,11 @@
 # This Week
 
-Focused weekly pull — max 5 tasks from backlog committed for this week.
-Reduces decision fatigue at session start.
-
-**Week of**: 2026-06-12
+**Week of**: 2026-06-17
 
 ---
 
-<!-- No agent tasks scheduled yet. Complete HT-001 through HT-008 first, then create Phase 0 specs. -->
+1. **P0-F001-002** — Application exceptions (`feat/F001-scaffolding`)
+2. **P0-F001-003** — Structured logging
+3. **P0-F001-004** — Correlation ID middleware
+
+After F001 tasks 001–007: run `make test-unit` on health/config tests.

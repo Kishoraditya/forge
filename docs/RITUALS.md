@@ -18,10 +18,11 @@ These ceremonies are non-negotiable. They keep context alive and prevent drift.
    - Yes: move it to `DONE.md`, check all checklist items, note actual time.
    - No: note where you stopped in `IN_PROGRESS.md`.
 2. Update `docs/CONTEXT.md`.
-3. Create the matching `turns/Turn-XX-stop.md`.
-4. Run `make test` when code changed and note pass/fail in `CONTEXT.md`.
-5. Commit everything after human review.
-6. Check `PARKING_LOT.md` for new ideas.
+3. Create the matching `turns/Turn-XX-stop.md` including **Tests run** (command + result, or "not required" with reason).
+4. Append decision rows to `docs/DECISIONS_LOG.md` when human or LLM made a material choice.
+5. Run tests when code changed; record in turn stop file. Docs-only turns: state "Tests: not required (docs-only)."
+6. **Commit the turn** on the active feature branch per `docs/GIT_WORKFLOW.md` — never on `main`.
+7. Check `PARKING_LOT.md` for new ideas.
 
 ## Per-Task Ritual
 
@@ -68,10 +69,11 @@ These ceremonies are non-negotiable. They keep context alive and prevent drift.
 
 | When | What to Update |
 |---|---|
-| Task completed | `DONE.md` + `CONTEXT.md` + `turns/Turn-XX-stop.md` |
+| Task completed | `DONE.md` + `CONTEXT.md` + `turns/Turn-XX-stop.md` + commit on feature branch |
 | Task started | `IN_PROGRESS.md` + `turns/Turn-XX-start.md` |
-| Agent turn starts | `turns/Turn-XX-start.md` |
-| Agent turn ends | `turns/Turn-XX-stop.md` |
+| Agent turn starts | `turns/Turn-XX-start.md` (include branch, planned tests) |
+| Agent turn ends | `turns/Turn-XX-stop.md` (include tests run or N/A) + git commit |
+| Material decision | `docs/DECISIONS_LOG.md` |
 | Blocker found | `BLOCKED.md` + `turns/Turn-XX-stop.md` |
 | Idea surfaces | `PARKING_LOT.md` |
 | Phase done | `CONTEXT.md` + `CHANGELOG.md` + tag |

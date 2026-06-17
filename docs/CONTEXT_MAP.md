@@ -21,6 +21,11 @@ Use this file to choose the smallest useful context set for a task.
 | Frontend | Relevant spec, `docs/CONVENTIONS.md`, touched `frontend/` files |
 | Infra | Relevant spec, `docs/ENVIRONMENT.md`, `docs/GIT_WORKFLOW.md`, touched `infra/` files |
 | Security | `docs/SECURITY.md`, relevant spec, touched auth/secrets/logging files |
+| Validation | `docs/VALIDATION.md`, relevant spec, Pydantic models |
+| Logging | `docs/LOGGING.md`, `docs/SECURITY.md`, touched logging setup |
+| Phase planning | `docs/PHASE_GATES.md`, `docs/FEATURES.md`, `.forge/workflows/` |
+| Decisions | `docs/DECISIONS_LOG.md`, relevant ADR in `docs/adr/` |
+| Agent prompts | `.forge/prompts/`, `tasks/_format.md` |
 | Observability | Relevant spec, `docs/SECURITY.md`, `docs/WORLD_SIGNALS.md`, touched telemetry files |
 | Docs-only | Target docs, `docs/CONTEXT.md`, latest turn file |
 

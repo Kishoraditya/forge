@@ -5,11 +5,11 @@ description = "BYOK Open-Source Agent Platform — self-hosted, multi-session AI
 authors = ["KSR"]
 readme = "README.md"
 license = "MIT"
-packages = [{include = "backend"}]
+packages = [{include = "app", from = "backend"}]
 
 [tool.poetry.dependencies]
 # Target Environment Support
-python = ">=3.11,<3.14"
+python = ">=3.12,<3.14"
 
 # Core
 regex = "^2026.5.9"
@@ -69,6 +69,7 @@ slowapi = "^0.1.9"
 e2b = "^2.29.0"
 
 # Utilities
+structlog = "^25.5.0"
 httpx = "^0.28.1"
 websockets = "^15.0.1"
 python-multipart = "^0.0.20"
@@ -110,23 +111,32 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "S", "B", "A", "COM", "C4", "DTZ", "ISC", "ICN", "PIE", "PT", "RSE", "RET", "SIM", "TID", "TCH", "ARG", "PTH", "ERA", "ASYNC", "G"]
-ignore = ["S101"]  # Allow assert in tests
+ignore = ["S101", "ERA001"]  # S101: assert in tests; ERA001: developer signature headers
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_decorators = false
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["backend/tests"]
+pythonpath = ["backend"]
 addopts = "-v --tb=short"
 
 [tool.isort]
 profile = "black"
 line_length = 100
+known_first_party = ["app"]
 
 [tool.black]
 line-length = 100
