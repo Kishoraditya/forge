@@ -39,6 +39,10 @@ require a CHANGELOG line unless it is investor- or user-visible.
 - Redis: ping-based fallback to in-memory when broker is unreachable
 - OpenRouter dev path: env key sync, free model aliases, zero-cost for unmapped models
 - LiteLLM debug noise suppressed; Next.js `turbopack.root` set for monorepo frontend
+- Stale localStorage session auto-recovery after backend restart
+
+### Added
+- F006: Supabase admin JWT verification, `/api/admin/me`, login page, middleware
 
 ## [0.0.0] — 2026-06-12
 

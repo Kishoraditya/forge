@@ -1,13 +1,16 @@
 # In Progress
 
-**Branch**: `feat/F003-f004-f005-conversation` (ready for PR)
+**Branch**: `feat/F006-admin-auth`
 
 ---
 
-### P0-F001-008 — Docker Compose dev stack
+### P0-F006-001 through P0-F006-005 — Admin authentication
 
-**Spec**: `specs/phase-0/F001-scaffolding.spec.md`
-**Status**: next
-**Depends on**: P0-F001-005 (done on F003 branch)
+**Spec**: `specs/phase-0/F006-admin-auth.spec.md`
+**Status**: in progress (RLS AC5 deferred to F008-006)
 
-**Tests required**: `make dev` smoke after compose file lands
+**Tests required**:
+```
+poetry run pytest backend/tests/unit/test_auth.py backend/tests/integration/test_admin_auth_api.py -v
+cd frontend && npm run lint && npm run build
+```
