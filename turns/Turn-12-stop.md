@@ -16,4 +16,4 @@ cd frontend && npm run lint && npm run build
 ## Notes
 - F006 AC5 (RLS) deferred to F008-006
 - Requires SUPABASE_JWT_SECRET, ADMIN_EMAIL, NEXT_PUBLIC_SUPABASE_* in env
-- Commit: TBD
+- Commit: `b492830`
