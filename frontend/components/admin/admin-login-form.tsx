@@ -17,6 +17,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { getSupabasePublicEnv, SUPABASE_ENV_SETUP_HINT } from "@/lib/supabase/env";
 
 export function AdminLoginForm() {
   const router = useRouter();
@@ -25,9 +26,11 @@ export function AdminLoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const configError = getSupabasePublicEnv() ? null : SUPABASE_ENV_SETUP_HINT;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (configError) return;
     setError(null);
     setLoading(true);
     try {
@@ -49,6 +52,16 @@ export function AdminLoginForm() {
       setLoading(false);
     }
   };
+
+  if (configError) {
+    return (
+      <div className="mx-auto max-w-md space-y-2 rounded-md border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+        <h1 className="text-2xl font-semibold text-amber-950">Admin login</h1>
+        <p className="font-medium">Supabase is not configured for the frontend.</p>
+        <p>{configError}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-md">

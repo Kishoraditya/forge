@@ -17,22 +17,35 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { getSupabasePublicEnv, SUPABASE_ENV_SETUP_HINT } from "@/lib/supabase/env";
 
 export default function AdminHomePage() {
   const router = useRouter();
+  const supabaseEnv = getSupabasePublicEnv();
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!supabaseEnv) return;
     void createSupabaseBrowserClient()
       .auth.getUser()
       .then(({ data }) => setEmail(data.user?.email ?? null));
-  }, []);
+  }, [supabaseEnv]);
 
   const logout = async () => {
+    if (!supabaseEnv) return;
     await createSupabaseBrowserClient().auth.signOut();
     router.replace("/admin/login");
     router.refresh();
   };
+
+  if (!supabaseEnv) {
+    return (
+      <div className="space-y-2 rounded-md border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+        <p className="font-medium">Supabase is not configured for the frontend.</p>
+        <p>{SUPABASE_ENV_SETUP_HINT}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

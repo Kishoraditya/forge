@@ -12,11 +12,12 @@
 
 import { createBrowserClient } from "@supabase/ssr";
 
+import { getSupabasePublicEnv, SUPABASE_ENV_SETUP_HINT } from "@/lib/supabase/env";
+
 export function createSupabaseBrowserClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) {
-    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+  const config = getSupabasePublicEnv();
+  if (!config) {
+    throw new Error(`Missing Supabase public env. ${SUPABASE_ENV_SETUP_HINT}`);
   }
-  return createBrowserClient(url, anonKey);
+  return createBrowserClient(config.url, config.anonKey);
 }
