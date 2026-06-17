@@ -13,5 +13,5 @@ cd frontend && npm run lint && npm run build
 ```
 
 ## Notes
-- Commit: TBD
+- Commit: `5d253f1`
 - PR opened after push
