@@ -25,6 +25,10 @@ require a CHANGELOG line unless it is investor- or user-visible.
 - Governance: decision log, logging/validation frameworks, branch-only git flow, `.forge/` prompts
 - F001 P0-F001-001: Pydantic Settings module (`backend/app/config.py`)
 - F001 P0-F001-002: Application exception hierarchy (`backend/app/core/exceptions.py`)
+- F001 P0-F001-003–007: FastAPI app factory, structlog, correlation middleware, health endpoint
+- F003: LiteLLM inference router, rate limits, chat + streaming API
+- F004: Anonymous sessions, budget tracking, Redis/in-memory fallback, session store (frontend)
+- F005: Message CRUD, SSE streaming, chat UI with markdown rendering
 - CI workflow (Python 3.12 backend, Node 24 frontend)
 
 ### Fixed
@@ -32,6 +36,9 @@ require a CHANGELOG line unless it is investor- or user-visible.
 - Pin `@emnapi/core` and `@emnapi/runtime` at 1.11.1 for Linux `npm ci` parity
 - CI contract tests (`backend/tests/ci/`) and `make ci-check` local parity target
 - Mypy: enable `pydantic.mypy` plugin; fix `Settings()` strict `call-arg` on Linux CI
+- Redis: ping-based fallback to in-memory when broker is unreachable
+- OpenRouter dev path: env key sync, free model aliases, zero-cost for unmapped models
+- LiteLLM debug noise suppressed; Next.js `turbopack.root` set for monorepo frontend
 
 ## [0.0.0] — 2026-06-12
 

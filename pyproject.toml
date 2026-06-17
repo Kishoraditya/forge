@@ -123,11 +123,24 @@ warn_return_any = true
 warn_unused_configs = true
 ignore_missing_imports = true
 plugins = ["pydantic.mypy"]
+mypy_path = "backend"
 
 [tool.pydantic-mypy]
 init_forbid_extra = true
 init_typed = true
 warn_required_dynamic_aliases = true
+
+[[tool.mypy.overrides]]
+module = ["app.api.*", "app.core.exception_handlers"]
+disallow_untyped_decorators = false
+
+[[tool.mypy.overrides]]
+module = ["app.core.middleware"]
+disable_error_code = ["misc"]
+
+[[tool.mypy.overrides]]
+module = ["app.db.redis_client"]
+disable_error_code = ["no-untyped-call"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

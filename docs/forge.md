@@ -773,4 +773,3 @@ Total
 
 
 Document version: 1.0.0 — Initial planning spec Next artifact: Architecture Decision Records (ADRs) + P0 detailed component diagram
-

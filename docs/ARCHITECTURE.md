@@ -56,7 +56,7 @@ sequenceDiagram
     API->>AC: Initiate/Resume StateGraph execution
     AC->>DB: Fetch active Skill & Personality system prompt
     DB-->>AC: Configuration metadata
-    
+
     rect rgb(200, 220, 240)
         Note over AC, KB: LangGraph Processing Loop
         AC->>AC: Routing & pre-filtering (Guardrails AI)

@@ -1,7 +1,7 @@
 // =============================================================================
-// forge / frontend / app / page
+// forge / frontend / lib / api-config
 // =============================================================================
-// Description : Forge chat home page.
+// Description : API base URL for browser calls to the Forge backend.
 // Layer       : Infra
 // Feature     : F005 — Basic Conversation Interface
 // Author      : cursor + KSR (reviewed by)
@@ -10,8 +10,6 @@
 // Version     : 0.1.0
 // =============================================================================
 
-import { ChatContainer } from "@/components/chat/chat-container";
-
-export default function Home() {
-  return <ChatContainer />;
-}
+/** Backend API base; empty string uses Next.js rewrites to localhost:8000. */
+export const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "";
