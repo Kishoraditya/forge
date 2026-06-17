@@ -1,13 +1,13 @@
 # Project Context — 2026-06-17
 
 ## Status
-F003–F005 complete on `feat/F003-f004-f005-conversation`. F001 scaffold items
-P0-F001-003 through P0-F001-007 landed alongside the conversation stack.
+F003–F005 on `feat/F003-f004-f005-conversation` — manual E2E verified with OpenRouter free models.
 
 ## What Was Just Done
-- Backend: LiteLLM router, inference/sessions/messages APIs, in-memory persistence
-- Frontend: Zustand session store, SSE chat client, full chat UI
-- 36 backend tests passing; frontend lint + build pass
+- Redis ping fallback when localhost:6379 is unavailable
+- OpenRouter BYOK: key sync, free model aliases (`openrouter/free`, etc.)
+- LiteLLM cost/noise fixes; Next.js turbopack root warning silenced
+- 41 backend tests passing
 
 ## Next 3 Tasks
 1. P0-F001-008 — Docker Compose dev stack

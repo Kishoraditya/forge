@@ -36,6 +36,9 @@ require a CHANGELOG line unless it is investor- or user-visible.
 - Pin `@emnapi/core` and `@emnapi/runtime` at 1.11.1 for Linux `npm ci` parity
 - CI contract tests (`backend/tests/ci/`) and `make ci-check` local parity target
 - Mypy: enable `pydantic.mypy` plugin; fix `Settings()` strict `call-arg` on Linux CI
+- Redis: ping-based fallback to in-memory when broker is unreachable
+- OpenRouter dev path: env key sync, free model aliases, zero-cost for unmapped models
+- LiteLLM debug noise suppressed; Next.js `turbopack.root` set for monorepo frontend
 
 ## [0.0.0] — 2026-06-12
 

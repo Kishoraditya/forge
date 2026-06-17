@@ -11,13 +11,27 @@
 # =============================================================================
 
 from app.config import get_settings
+from app.constants import (
+    OPENROUTER_FREE_CHEAP_MODEL,
+    OPENROUTER_FREE_FAST_MODEL,
+    OPENROUTER_FREE_SMART_MODEL,
+    OPENROUTER_PROVIDER_PREFIX,
+)
 from app.core.exceptions import AppValidationError
 
-_ALIAS_MAP: dict[str, str] = {
+_ANTHROPIC_ALIAS_MAP: dict[str, str] = {
     "fast": "claude-3-5-haiku-latest",
     "smart": "claude-3-5-sonnet-latest",
     "cheap": "claude-3-5-haiku-latest",
 }
+
+_OPENROUTER_ALIAS_MAP: dict[str, str] = {
+    "fast": OPENROUTER_FREE_FAST_MODEL,
+    "cheap": OPENROUTER_FREE_CHEAP_MODEL,
+    "smart": OPENROUTER_FREE_SMART_MODEL,
+}
+
+_KNOWN_ALIASES = frozenset(_ANTHROPIC_ALIAS_MAP.keys())
 
 
 def resolve_model(alias: str) -> str:
@@ -28,23 +42,29 @@ def resolve_model(alias: str) -> str:
         alias: Short alias such as ``fast`` or ``smart``.
 
     Returns:
-        str: LiteLLM model identifier (e.g. ``anthropic/claude-...``).
+        str: LiteLLM model identifier (e.g. ``openrouter/meta-llama/...``).
 
     Raises:
-        AppValidationError: If alias is unknown or Anthropic key is missing.
+        AppValidationError: If alias is unknown or no provider key is configured.
 
     Example:
         >>> resolve_model("fast")  # doctest: +SKIP
-        'anthropic/claude-3-5-haiku-latest'
+        'openrouter/openrouter/free'
 
     Notes:
-        - Dev fallback uses ANTHROPIC_API_KEY from environment until F002 admin BYOK.
+        - Prefers OpenRouter when OPENROUTER_API_KEY is set (free models for dev).
+        - Falls back to Anthropic when only ANTHROPIC_API_KEY is configured.
     """
-    model_name = _ALIAS_MAP.get(alias)
-    if model_name is None:
+    if alias not in _KNOWN_ALIASES:
         msg = f"Unknown model alias: {alias}"
         raise AppValidationError(msg)
+
     settings = get_settings()
-    if not settings.anthropic_api_key:
-        raise AppValidationError("Anthropic API key not configured")
-    return f"anthropic/{model_name}"
+    if settings.openrouter_api_key:
+        model_id = _OPENROUTER_ALIAS_MAP[alias]
+        return f"{OPENROUTER_PROVIDER_PREFIX}/{model_id}"
+    if settings.anthropic_api_key:
+        return f"anthropic/{_ANTHROPIC_ALIAS_MAP[alias]}"
+    raise AppValidationError(
+        "No LLM provider API key configured (set OPENROUTER_API_KEY or ANTHROPIC_API_KEY)",
+    )

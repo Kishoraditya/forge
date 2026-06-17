@@ -38,6 +38,7 @@ class Settings(BaseSettings):
     supabase_anon_key: str
     supabase_service_role_key: str
     anthropic_api_key: str | None = Field(default=None)
+    openrouter_api_key: str | None = Field(default=None)
     default_session_budget_usd: float = Field(default=0.10)
     session_ttl_seconds: int = Field(default=7200)
     default_model_alias: str = Field(default="fast")

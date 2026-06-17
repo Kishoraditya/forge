@@ -17,7 +17,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from app.core.llm_router import LLMRouter
+from app.core.llm_router import LLMRouter, _safe_completion_cost
 from app.models.inference import ChatMessage
 
 
@@ -27,6 +27,18 @@ def _response(content: str) -> Any:
         choices=[SimpleNamespace(message=SimpleNamespace(content=content))],
         usage=SimpleNamespace(prompt_tokens=3, completion_tokens=2),
     )
+
+
+@pytest.mark.asyncio
+async def test_safe_completion_cost_returns_zero_when_unmapped() -> None:
+    """Unmapped free models return zero cost instead of raising."""
+    response = _response("ok")
+
+    with patch(
+        "app.core.llm_router.litellm.completion_cost",
+        side_effect=Exception("model isn't mapped yet"),
+    ):
+        assert _safe_completion_cost(response, "openrouter/openrouter/free") == 0.0
 
 
 @pytest.mark.asyncio

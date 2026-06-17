@@ -16,6 +16,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api import health, inference, messages, sessions
 from app.config import get_settings
 from app.core.exception_handlers import register_exception_handlers
+from app.core.llm_credentials import configure_litellm_runtime, sync_provider_keys_to_env
 from app.core.logging import configure_logging
 from app.core.middleware import CorrelationIdMiddleware
 
@@ -32,7 +33,9 @@ def create_app() -> FastAPI:
         - See: specs/phase-0/F003-llm-routing.spec.md
     """
     configure_logging()
+    configure_litellm_runtime()
     settings = get_settings()
+    sync_provider_keys_to_env(settings)
     app = FastAPI(title="Forge", version="0.1.0")
     app.add_middleware(
         CORSMiddleware,

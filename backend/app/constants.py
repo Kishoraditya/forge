@@ -20,6 +20,13 @@ LLM_MAX_RETRIES = 3
 LLM_RETRY_BASE_DELAY_SECONDS = 0.5
 LLM_FALLBACK_ALIASES = ("fast", "smart", "cheap")
 
+# OpenRouter free-tier models (no cost; good for local dev)
+# See https://openrouter.ai/models?q=free — IDs change; verify periodically.
+OPENROUTER_FREE_FAST_MODEL = "openrouter/free"
+OPENROUTER_FREE_SMART_MODEL = "meta-llama/llama-3.3-70b-instruct:free"
+OPENROUTER_FREE_CHEAP_MODEL = "mistralai/mistral-small-3.1-24b-instruct:free"
+OPENROUTER_PROVIDER_PREFIX = "openrouter"
+
 # Sessions (F004)
 DEFAULT_SESSION_BUDGET_USD = 0.10
 DEFAULT_SESSION_TTL_SECONDS = 7200

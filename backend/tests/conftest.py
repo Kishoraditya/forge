@@ -39,6 +39,7 @@ def _set_required_env(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")
     monkeypatch.setenv("SUPABASE_ANON_KEY", "test-anon-key")
     monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "test-service-role-key")
+    monkeypatch.setenv("OPENROUTER_API_KEY", "")
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-key")
 
 

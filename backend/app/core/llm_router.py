@@ -25,6 +25,25 @@ logger = structlog.get_logger(__name__)
 CompletionFn = Callable[..., Awaitable[Any]]
 
 
+def _safe_completion_cost(response: Any, model_used: str) -> float:
+    """
+    Return completion cost in USD, defaulting to zero when unmapped.
+
+    Args:
+        response: LiteLLM completion response.
+        model_used: Resolved LiteLLM model string.
+
+    Returns:
+        float: Cost in USD (0.0 for free or unmapped models).
+    """
+    try:
+        cost = litellm.completion_cost(completion_response=response)
+        return float(cost or 0.0)
+    except Exception:
+        logger.debug("completion_cost_unmapped", model=model_used)
+        return 0.0
+
+
 def _extract_usage(response: Any, model_used: str) -> InferenceResult:
     """
     Build InferenceResult from a LiteLLM response object.
@@ -40,7 +59,7 @@ def _extract_usage(response: Any, model_used: str) -> InferenceResult:
     usage = getattr(response, "usage", None)
     prompt_tokens = int(getattr(usage, "prompt_tokens", 0) or 0)
     completion_tokens = int(getattr(usage, "completion_tokens", 0) or 0)
-    cost_usd = float(litellm.completion_cost(completion_response=response) or 0.0)
+    cost_usd = _safe_completion_cost(response, model_used)
     return InferenceResult(
         content=content,
         prompt_tokens=prompt_tokens,

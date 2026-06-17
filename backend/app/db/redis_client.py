@@ -123,7 +123,9 @@ async def get_redis() -> Any:
     try:
         import redis.asyncio as redis
 
-        _redis_client = redis.from_url(settings.redis_url, decode_responses=True)
+        client = redis.from_url(settings.redis_url, decode_responses=True)
+        await client.ping()
+        _redis_client = client
         return _redis_client
     except Exception as exc:  # noqa: BLE001
         logger.warning("redis_fallback_memory", error=str(exc))
@@ -132,13 +134,16 @@ async def get_redis() -> Any:
         return _redis_client
 
 
-def reset_redis_client() -> None:
+def reset_redis_client(*, prefer_memory: bool = True) -> None:
     """
     Reset Redis singleton (tests only).
 
+    Args:
+        prefer_memory: When True, force in-memory client on next get_redis call.
+
     Notes:
-        - Forces in-memory client on next get_redis call.
+        - Use prefer_memory=False to exercise Redis URL + ping fallback in tests.
     """
     global _redis_client, _use_memory  # noqa: PLW0603
     _redis_client = None
-    _use_memory = True
+    _use_memory = prefer_memory
