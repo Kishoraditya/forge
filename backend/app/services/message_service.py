@@ -21,6 +21,7 @@ from app.db.message_repository import MessageRepository
 from app.models.inference import ChatMessage
 from app.models.message import MessageRecord
 from app.services.inference_service import InferenceService
+from app.services.rag_service import RAGService
 from app.services.session_service import SessionService
 
 
@@ -32,6 +33,7 @@ class MessageService:
         messages: MessageRepository | None = None,
         sessions: SessionService | None = None,
         inference: InferenceService | None = None,
+        rag: RAGService | None = None,
     ) -> None:
         """
         Initialize message service.
@@ -40,10 +42,12 @@ class MessageService:
             messages: Message repository.
             sessions: Session service.
             inference: Inference orchestration service.
+            rag: RAG retrieval service.
         """
         self._messages = messages or MessageRepository()
         self._sessions = sessions or SessionService()
         self._inference = inference or InferenceService()
+        self._rag = rag or RAGService()
 
     def _to_record(self, row: MessageRow) -> MessageRecord:
         """
@@ -113,6 +117,25 @@ class MessageService:
             if r.role in ("user", "assistant", "system")
         ]
 
+    async def _with_rag_context(self, history: list[ChatMessage], query: str) -> list[ChatMessage]:
+        """
+        Prepend retrieved document context when knowledge base has documents.
+
+        Args:
+            history: Conversation messages for inference.
+            query: Latest user query text.
+
+        Returns:
+            list[ChatMessage]: History optionally prefixed with system context.
+        """
+        if not self._rag.list_documents():
+            return history
+        retrieval = await self._rag.retrieve(query)
+        if not retrieval.chunks:
+            return history
+        context = "Relevant knowledge base context:\n\n" + "\n\n---\n\n".join(retrieval.chunks)
+        return [ChatMessage(role="system", content=context), *history]
+
     async def send_message_stream(
         self,
         session_id: UUID,
@@ -136,7 +159,7 @@ class MessageService:
             raise AppValidationError("Message content cannot be empty")
         status = await self._sessions.get_session(session_id)
         self._messages.append(session_id, "user", content)
-        history = self._history_as_chat(session_id)
+        history = await self._with_rag_context(self._history_as_chat(session_id), content)
         assistant_parts: list[str] = []
         async for event in self._inference.stream_messages(
             history,
@@ -173,9 +196,10 @@ class MessageService:
         removed = self._messages.remove_last_assistant(session_id)
         if removed is None:
             raise AppValidationError("No assistant message to regenerate")
-        history = self._history_as_chat(session_id)
-        if not history or history[-1].role != "user":
+        base_history = self._history_as_chat(session_id)
+        if not base_history or base_history[-1].role != "user":
             raise NotFoundError("No user message to regenerate from")
+        history = await self._with_rag_context(base_history, base_history[-1].content)
         assistant_parts: list[str] = []
         async for event in self._inference.stream_messages(
             history,

@@ -1,0 +1,53 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  neo4j:
+    image: neo4j:5-community
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-forge-dev-password}
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "${NEO4J_PASSWORD:-forge-dev-password}", "RETURN 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../../.env.local
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../../backend:/app/backend
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../../.env.local
+    depends_on:
+      - backend
+    volumes:
+      - ../../frontend:/app/frontend
+      - /app/frontend/node_modules
+    command: npm run dev

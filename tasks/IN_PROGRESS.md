@@ -1,16 +1,13 @@
 # In Progress
 
-**Branch**: `feat/F006-admin-auth`
+**Branch**: `feat/F007-rag`
 
 ---
 
-### P0-F006-001 through P0-F006-005 — Admin authentication
+### Phase 0 finalize — F001/F008/F002/F007 remainder
 
-**Spec**: `specs/phase-0/F006-admin-auth.spec.md`
-**Status**: in progress (RLS AC5 deferred to F008-006)
+**Status**: complete (in-memory persistence default; Postgres via `DATABASE_URL` + `make migrate`)
 
-**Tests required**:
-```
-poetry run pytest backend/tests/unit/test_auth.py backend/tests/integration/test_admin_auth_api.py -v
-cd frontend && npm run lint && npm run build
-```
+**Tests**: 55 passed | frontend lint + build pass
+
+**Manual**: `make migrate` with `DATABASE_URL` set → Supabase schema + RLS
