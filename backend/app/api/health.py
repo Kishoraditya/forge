@@ -12,6 +12,8 @@
 
 from fastapi import APIRouter
 
+from app.config import get_settings
+
 router = APIRouter(tags=["health"])
 
 
@@ -21,9 +23,10 @@ async def health_check() -> dict[str, str]:
     Return service health status.
 
     Returns:
-        dict[str, str]: Simple ok payload.
+        dict[str, str]: Status and environment name.
 
     Example:
-        GET /health → {"status": "ok"}
+        GET /health → {"status": "ok", "environment": "development"}
     """
-    return {"status": "ok"}
+    settings = get_settings()
+    return {"status": "ok", "environment": settings.environment}

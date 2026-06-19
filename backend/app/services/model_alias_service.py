@@ -18,6 +18,7 @@ from app.constants import (
     OPENROUTER_PROVIDER_PREFIX,
 )
 from app.core.exceptions import AppValidationError
+from app.db.api_key_repository import ApiKeyRepository
 
 _ANTHROPIC_ALIAS_MAP: dict[str, str] = {
     "fast": "claude-3-5-haiku-latest",
@@ -52,9 +53,14 @@ def resolve_model(alias: str) -> str:
         'openrouter/openrouter/free'
 
     Notes:
-        - Prefers OpenRouter when OPENROUTER_API_KEY is set (free models for dev).
-        - Falls back to Anthropic when only ANTHROPIC_API_KEY is configured.
+        - Prefers database alias mappings when configured (F002 BYOK).
+        - Falls back to env-based OpenRouter or Anthropic defaults.
     """
+    repo = ApiKeyRepository()
+    stored = repo.get_alias(alias)
+    if stored is not None:
+        return f"{stored.provider}/{stored.model_name}"
+
     if alias not in _KNOWN_ALIASES:
         msg = f"Unknown model alias: {alias}"
         raise AppValidationError(msg)

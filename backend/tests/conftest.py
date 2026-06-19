@@ -21,6 +21,7 @@ from httpx import ASGITransport, AsyncClient
 from app.config import reset_settings_cache
 from app.db.memory_store import reset_memory_store
 from app.db.redis_client import reset_redis_client
+from app.db.session import reset_db_engine
 
 
 def _set_required_env(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -79,6 +80,11 @@ def _reset_api_singletons() -> None:
     inference._inference = None  # noqa: SLF001
     messages._messages = None  # noqa: SLF001
     sessions._sessions = None  # noqa: SLF001
+    from app.api import admin_byok, admin_documents
+
+    admin_byok._byok = None  # noqa: SLF001
+    admin_byok._keys = None  # noqa: SLF001
+    admin_documents._rag = None  # noqa: SLF001
 
 
 @pytest.fixture(autouse=True)  # type: ignore[untyped-decorator]
@@ -96,11 +102,13 @@ def reset_stores(monkeypatch: pytest.MonkeyPatch) -> Generator[None, None, None]
     reset_settings_cache()
     reset_memory_store()
     reset_redis_client()
+    reset_db_engine()
     _reset_api_singletons()
     yield
     reset_settings_cache()
     reset_memory_store()
     reset_redis_client()
+    reset_db_engine()
     _reset_api_singletons()
 
 
@@ -127,6 +135,13 @@ def mock_litellm() -> Generator[AsyncMock, None, None]:
                 side_effect=_acompletion,
             ),
             patch("app.core.llm_router.litellm.completion_cost", return_value=0.001),
+            patch(
+                "litellm.aembedding",
+                new_callable=AsyncMock,
+                return_value=SimpleNamespace(
+                    data=[{"embedding": [0.1] * 1536}],
+                ),
+            ),
         ):
             yield mocked
 
